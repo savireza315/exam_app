@@ -8,6 +8,7 @@ class bannerListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ListView.builder(
+      shrinkWrap: true,
         itemCount: bannerList.length,
         itemBuilder: (context, index){
           final banner = bannerList[index];
