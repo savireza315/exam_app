@@ -1,8 +1,11 @@
+import 'package:exam_app/datasource/courseRemoteDataSource.dart';
 import 'package:exam_app/model/bannerResponseModel.dart';
+import 'package:exam_app/model/courseResponseModel.dart';
 import 'package:exam_app/widget/bannerListWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/datasource/bannerRemoteDataSource.dart';
 import 'package:lottie/lottie.dart';
+import 'package:exam_app/widget/courseListWidget.dart';
 
 enum bannerStatus { initial, loading, succes, error }
 
@@ -15,90 +18,120 @@ class home extends StatefulWidget {
 
 class _homeState extends State<home> {
   final BannerRemote = bannerRemote();
+  final CourseRemote = courseRemote();
+
   BannerResponse? bannerResponse;
-  bannerStatus BannerStatus = bannerStatus.initial;
+  CourseResponse? courseResponse;
+
 
   @override
   void initState() {
     getBanner();
+    getCourse();
     super.initState();
   }
 
   void getBanner() async {
-    BannerStatus = bannerStatus.loading;
-    setState(() {});
-
     bannerResponse = await BannerRemote.getBanners();
-    BannerStatus = bannerStatus.succes;
+    setState(() {});
+  }
+  void getCourse() async{
+    courseResponse= await CourseRemote.getCourse();
     setState(() {});
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Halo User',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Selamat Datang',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(
-                        "https://pbs.twimg.com/profile_images/1259734667214774273/pIRPG78R_400x400.jpg"),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16,),
-              Container(
-                alignment: Alignment.centerLeft,
-                height: 137,
-                width: 700,
-                decoration: BoxDecoration(
-                  color: Color(0xffd688f2),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                child: Row(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Align(
-                      alignment: Alignment.center,
-                      child: const Text('\t\t\t\t\tIngin Menjadi Juara Kelas?\n\t\t\t\t\tYuk Kerjakan Latihan Soal\n\t\t\t\t\tMau Latihan Apa Hri Ini?', style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                      ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Halo User',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Selamat Datang',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
-                    Lottie.asset('assets/juara2.json'),
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundImage: NetworkImage(
+                          "https://pbs.twimg.com/profile_images/1259734667214774273/pIRPG78R_400x400.jpg"),
+                    ),
                   ],
                 ),
-              ),
-              BannerResponse == null
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : bannerListWidget(
-                      bannerList: bannerResponse?.data ?? [],
+                SizedBox(height: 16,),
+                Container(
+                  height: 137,
+                  decoration: BoxDecoration(
+                    color: Color(0xffd688f2),
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Align(
+                        alignment: Alignment.center,
+                        child: const Text('\t\t\t\t\tIngin Menjadi Juara Kelas?\n\t\t\t\t\tYuk Kerjakan Latihan Soal\n\t\t\t\t\tMau Latihan Apa Hri Ini?', style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                        ),
+                      ),
+                      Lottie.asset('assets/juara2.json'),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Pilih Pelajaran', style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
                     ),
-            ],
+                    ),
+                    TextButton(
+                        onPressed: (){},
+                        child: Text('Lihat Semua'),
+                    )
+                  ],
+                ),
+                CourseResponse == null
+                    ? const Center(child: CircularProgressIndicator(),)
+                    : CourseListWidget(courseList: courseResponse?.data??[]),
+                SizedBox(height: 25),
+                Text('Terbaru', style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
+                ),
+                ),
+                const SizedBox(height: 27),
+                BannerResponse == null
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : bannerListWidget(
+                        bannerList: bannerResponse?.data ?? [],
+                      ),
+              ],
+            ),
           ),
         ),
       ),

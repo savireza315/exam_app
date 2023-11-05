@@ -7,14 +7,26 @@ class bannerListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return ListView.builder(
-      shrinkWrap: true,
-        itemCount: bannerList.length,
-        itemBuilder: (context, index){
-          final banner = bannerList[index];
+    return SizedBox(
+      height: 146,
+      child: ListView.separated(
+        shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: bannerList.length,
+          separatorBuilder: (context,index) => const SizedBox(width: 29,) ,
+          itemBuilder: (context, index){
+            final banner = bannerList[index];
 
-          return Text(banner.eventTitle??'No Title');
-        }
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                height: 146,
+                width: 284,
+                child: Image.network(banner.eventImage??''),
+              ),
+            );
+          }
+      ),
     );
   }
 }
