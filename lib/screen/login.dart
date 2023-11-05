@@ -65,7 +65,7 @@ class _loginState extends State<login> {
               ),
               ElevatedButton(
                   onPressed: (){
-                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>const home()));
+                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>home()));
                   },
                   child: Text('Login')
               ),

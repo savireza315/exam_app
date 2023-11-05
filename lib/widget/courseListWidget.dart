@@ -3,15 +3,16 @@ import 'package:exam_app/model/courseResponseModel.dart';
 
 class CourseListWidget extends StatelessWidget {
   final List<CourseData> courseList;
+  final bool isHomeScreen;
 
-  const CourseListWidget({super.key, required this.courseList});
+  const CourseListWidget({super.key, required this.courseList, this.isHomeScreen=true});
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
-      itemCount: 3,
-      physics: const NeverScrollableScrollPhysics(),
+      itemCount: isHomeScreen? 3:courseList.length,
+      physics: isHomeScreen?NeverScrollableScrollPhysics():BouncingScrollPhysics(),
       separatorBuilder: (context,index)=>const SizedBox(height: 15),
       itemBuilder: (context, index){
         final course = courseList[index];
