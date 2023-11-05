@@ -17,6 +17,7 @@ class CourseListWidget extends StatelessWidget {
         final course = courseList[index];
 
         return Container(
+          padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 18),
             height: 96,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -40,7 +41,18 @@ class CourseListWidget extends StatelessWidget {
                     ) ,
                   ),
                 ),
-                Text(course.majorName??'No Course Name'),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(course.majorName??'No Course Name'),
+                      Text('${course.jumlahDone}/${course.jumlahMateri} Paket Latihan Soal'),
+                      SizedBox(width: 4),
+                      LinearProgressIndicator(value: 0.5)
+                    ],
+                  ),
+                ),
               ],
             )
         );
