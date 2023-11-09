@@ -1,14 +1,14 @@
-import 'package:exam_app/screen/home.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:exam_app/screen/register.dart';
+import 'package:exam_app/screen/login.dart';
 
-class login extends StatefulWidget{
-  const login({Key? key}) : super(key: key);
+class register extends StatefulWidget{
+  const register({Key? key}) : super(key: key);
   @override
-  loginscreen createState() => loginscreen();
+  screenRegister createState() => screenRegister();
 }
-class loginscreen extends State<login>{
+class screenRegister extends State<register>{
   late String _email, _password;
   final auth = FirebaseAuth.instance;
   var emailController = TextEditingController();
@@ -20,7 +20,7 @@ class loginscreen extends State<login>{
         decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.green.withOpacity(0.6),
+                Colors.purple.withOpacity(0.6),
                 Colors.black.withOpacity(0.2),
                 Colors.black.withOpacity(0.2),
               ],
@@ -40,7 +40,7 @@ class loginscreen extends State<login>{
                         height: 40,
                       ),
                       Text(
-                        "LOGIN",
+                        "Register",
                         style: TextStyle(
                             fontSize: 28,
                             color: Colors.white,
@@ -115,17 +115,17 @@ class loginscreen extends State<login>{
                               width: MediaQuery.of(context).size.width,
                               child: MaterialButton(
                                 onPressed: () async {
-                                  auth.signInWithEmailAndPassword(
+                                  auth.createUserWithEmailAndPassword(
                                       email: _email,
                                       password: _password
                                   );
                                   Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(builder: (context) => home()
+                                      MaterialPageRoute(builder: (context) => login()
                                       )
                                   );
                                 },
                                 child: Text(
-                                  "Login",
+                                  "Register",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
@@ -138,34 +138,22 @@ class loginscreen extends State<login>{
                                 padding: EdgeInsets.all(16),
                               ),
                             ),
+
                             SizedBox(height: 20),
-                            InkWell(
-                              onTap: () async {
+                            ElevatedButton.icon(
+                              onPressed:() async{
                                 final result = await Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (_) => home())
+                                    MaterialPageRoute(builder: (_) => login())
                                 );
-                              },
-                              child: Text(
-                                "Forgot Password?",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
+                              } ,
+                              icon: FaIcon(FontAwesomeIcons.arrowLeft),
+                              label: Text("Back To Login"),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  onPrimary: Colors.black,
+                                  minimumSize: Size(100, 40)
                               ),
-                            ),InkWell(
-                              onTap: ()async{
-                                final result = await Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (_) => register())
-                                );
-                              },
-                              child: Text(
-                                "\nCreate New Account",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
+                            )
                           ],
                         ),
                       ),

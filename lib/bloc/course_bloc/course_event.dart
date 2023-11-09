@@ -4,4 +4,6 @@ part of 'course_bloc.dart';
 abstract class CourseEvent {}
 
 class GetCourseListEvent extends CourseEvent{}
+class InitCourse extends CourseEvent{}
+
 
